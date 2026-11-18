@@ -1,0 +1,23 @@
+﻿Claude AI cho AutoCAD - Trước khi cài đặt
+
+Yêu cầu:
+- Windows 10 bản 1809 trở lên, hoặc Windows 11 (64-bit).
+- AutoCAD 2018 trở lên. Không hỗ trợ AutoCAD LT.
+- Tài khoản Claude trả phí.
+- Kết nối Internet.
+
+Hãy đóng AutoCAD trước khi cài. Setup không tự đóng AutoCAD.
+Setup cài cho người dùng hiện tại, không cần quyền quản trị.
+Python đi kèm trong gói, bạn không cần cài thêm gì.
+Nếu máy chưa có Claude Code, Setup tải từ Anthropic và kiểm tra chữ ký số
+trước khi chạy. Nếu không tải được, Setup vẫn hoàn tất và hướng dẫn cách
+cài thủ công.
+
+Palette Claude có thể tự chạy lệnh AutoCAD và mã Python trên máy bạn, với
+quyền của bạn, không hỏi lại. Chữ trong bản vẽ hoặc tệp đính kèm có thể
+chứa chỉ dẫn độc hại.
+
+Chỉ dùng với bản vẽ và tệp tin cậy.
+
+Trang sau yêu cầu bạn đánh dấu xác nhận rủi ro trước khi tiếp tục.
+Sau khi cài, mở "Hướng dẫn sử dụng" trong Start Menu để xem chi tiết.

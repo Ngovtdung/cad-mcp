@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Claude AI cho AutoCAD - Hướng dẫn sử dụng</title>
+<style>
+body{font-family:Segoe UI,Arial,sans-serif;max-width:46em;margin:2em auto;padding:0 1em;line-height:1.55;color:#222}
+h1{font-size:1.7em;border-bottom:2px solid #444;padding-bottom:.3em}
+h2{font-size:1.3em;margin-top:1.8em;border-bottom:1px solid #ccc;padding-bottom:.2em}
+h3{font-size:1.05em;margin-top:1.2em}
+img{max-width:100%;border:1px solid #bbb;margin:.5em 0}
+.warn{background:#fff4e5;border-left:5px solid #d97706;padding:.6em 1em;margin:1em 0}
+.note{background:#eef6ff;border-left:5px solid #2563eb;padding:.6em 1em;margin:1em 0}
+code{background:#f2f2f2;padding:0 .25em;font-family:Consolas,monospace}
+table{border-collapse:collapse;width:100%;margin:.6em 0}
+th,td{border:1px solid #bbb;padding:.35em .6em;text-align:left;vertical-align:top}
+th{background:#f0f0f0}
+.cap{font-size:.9em;color:#555;margin-top:0}
+</style>
+</head>
+<body>
+<h1>Claude AI cho AutoCAD - Hướng dẫn sử dụng</h1>
+
+<div class="warn"><strong>Chỉ dùng với bản vẽ và tệp tin cậy.</strong> Đọc kỹ mục 7 trước khi dùng palette.</div>
+
+<h2 id="muc-1">1. Giới thiệu và yêu cầu</h2>
+<p><strong>Claude AI cho AutoCAD</strong> là một bảng (palette) trong AutoCAD. Bạn gõ yêu cầu bằng tiếng Việt hoặc tiếng Anh, Claude đọc bản vẽ và thực hiện, ví dụ: liệt kê các layer, đổi màu đối tượng, viết một đoạn lệnh, đọc dữ liệu từ bảng Excel đính kèm.</p>
+<p>Yêu cầu:</p>
+<ul>
+<li>Windows 10 bản 1809 trở lên, hoặc Windows 11, máy 64-bit.</li>
+<li>AutoCAD 2018 trở lên. <strong>Không hỗ trợ AutoCAD LT.</strong></li>
+<li>Tài khoản Claude hoặc API key. Không cần Claude Desktop.</li>
+<li>Kết nối Internet.</li>
+</ul>
+<p>Gói cài đặt đã kèm Python, bạn không cần cài Python riêng.</p>
+
+<h2 id="muc-2">2. Cài đặt</h2>
+
+<h3>Bước 1. Kiểm tra tệp cài đặt (tùy chọn nhưng nên làm)</h3>
+<p>Bên cạnh <code>cad-mcp-setup-3.1.1.exe</code> có tệp <code>.sha256</code> ghi mã kiểm. Mở PowerShell trong thư mục chứa tệp và chạy:</p>
+<p><code>Get-FileHash .\cad-mcp-setup-3.1.1.exe -Algorithm SHA256</code></p>
+<p>So sánh chuỗi mã hiển thị với nội dung tệp <code>.sha256</code>. Hai chuỗi phải giống hệt nhau. Nếu không giống, đừng cài và tải lại gói.</p>
+
+<h3>Bước 2. Vượt cảnh báo SmartScreen</h3>
+<p>Setup.exe chưa có chữ ký số, nên Windows có thể hiện cảnh báo <strong>"Windows protected your PC"</strong> (Windows đã ngăn ứng dụng không xác định) khi bạn chạy lần đầu. Đây là hành vi bình thường với phần mềm chưa ký.</p>
+<ol>
+<li>Bấm <strong>More info</strong> (Thông tin thêm).</li>
+<li>Bấm <strong>Run anyway</strong> (Vẫn chạy).</li>
+</ol>
+<p class="cap">Cảnh báo này không hiện ảnh chụp trong hướng dẫn vì không thể chụp lại được. Hãy làm theo hai bước trên.</p>
+
+<h3>Bước 3. Đóng AutoCAD</h3>
+<p>Hãy đóng AutoCAD trước khi cài. Setup <strong>không tự đóng AutoCAD</strong>. Nếu Setup thấy AutoCAD đang chạy, nó hiện hộp thoại có hai nút <strong>Retry</strong> (Thử lại) và <strong>Cancel</strong> (Hủy). Hãy đóng AutoCAD rồi bấm Retry.</p>
+
+<h3>Bước 4. Chạy Setup</h3>
+<p>Setup cài cho người dùng hiện tại, <strong>không cần quyền quản trị</strong>. Chương trình được cài vào <code>%LOCALAPPDATA%\cad-mcp</code>, phần bổ sung cho AutoCAD nằm ở <code>%APPDATA%\Autodesk\ApplicationPlugins\ClaudeCAD.bundle</code>.</p>
+<p>Trang đầu là trang thông tin trước khi cài.</p>
+<img src="img/s02-trang-thong-tin.png" alt="Trang thông tin trước khi cài">
+<p class="cap">Hình: trang thông tin trước khi cài.</p>
+
+<h3>Bước 5. Đánh dấu xác nhận rủi ro</h3>
+<p>Trang tiếp theo ghi rõ rủi ro khi dùng palette. Nút <strong>Tiếp</strong> bị khóa cho đến khi bạn đánh dấu ô xác nhận. Nội dung trang này giống hệt mục 7.</p>
+<img src="img/s03-trang-rui-ro.png" alt="Trang rủi ro bắt buộc xác nhận">
+<p class="cap">Hình: trang rủi ro. Đánh dấu ô "Tôi hiểu rủi ro trên và chỉ dùng palette với bản vẽ, tệp tin cậy" để tiếp tục.</p>
+
+<h3>Bước 6. Theo dõi quá trình cài</h3>
+<img src="img/s04-dang-cai.png" alt="Đang cài đặt">
+<p class="cap">Hình: Setup đang cài đặt.</p>
+
+<h3>Bước 7. Claude Code (tự động)</h3>
+<p>Claude Code là chương trình dòng lệnh mà palette dùng để kết nối với tài khoản Claude của bạn.</p>
+<ul>
+<li>Nếu máy đã có <code>claude.exe</code>, Setup dùng luôn.</li>
+<li>Nếu chưa có, Setup tải <code>claude.exe</code> từ Anthropic và <strong>kiểm tra chữ ký số "Anthropic, PBC"</strong> trước khi chạy. Chỉ khi chữ ký hợp lệ Setup mới dùng tệp đó.</li>
+<li>Nếu máy không có Internet, mạng bị chặn proxy, hoặc chữ ký không khớp, Setup <strong>vẫn hoàn tất</strong> và hiện hướng dẫn cài Claude Code thủ công theo tài liệu chính thức của Anthropic.</li>
+</ul>
+
+<h3>Bước 8. Kết thúc</h3>
+<img src="img/s05-ket-thuc.png" alt="Trang kết thúc cài đặt">
+<p class="cap">Hình: trang kết thúc.</p>
+<p>Ô <strong>Mở Hướng dẫn sử dụng</strong> mở tệp này. Sau khi cài, bạn cũng tìm thấy hướng dẫn trong Start Menu, mục <strong>Claude AI cho AutoCAD</strong>. Nếu được hỏi "Đăng nhập Claude", hãy xem mục 3.</p>
+
+<h2 id="muc-3">3. Đăng nhập Claude</h2>
+<p>Palette đăng nhập bằng tài khoản Claude của chính bạn (mặc định) hoặc bằng API key.</p>
+<ol>
+<li>Chọn <strong>Đăng nhập Claude</strong> khi Setup hỏi. Một cửa sổ console chạy lệnh <code>claude auth login</code>.</li>
+<li>Trình duyệt mở ra. Đăng nhập bằng tài khoản Claude của bạn.</li>
+<li>Khi đăng nhập xong, quay lại cửa sổ console.</li>
+</ol>
+<p>Nếu bỏ qua bước này, bạn có thể đăng nhập sau: trong palette, gõ <code>/login</code> và làm theo hướng dẫn.</p>
+<div class="note">Tổ chức của bạn chặn Claude Code: khi đăng nhập hiện lỗi <strong>403</strong>. Đây không phải lỗi của máy bạn. Hãy liên hệ quản trị viên CNTT của tổ chức.</div>
+
+<h3>Dùng API key thay cho tài khoản</h3>
+<ul>
+<li>Chọn phương thức đăng nhập trong mục <strong>Cài đặt</strong> của palette. Với API key, nhập key bằng nút <strong>Dán &amp; lưu</strong>.</li>
+<li>Key được mã hoá bằng Windows DPAPI theo tài khoản Windows. Key chỉ được truyền cho tiến trình <code>claude</code> qua biến môi trường.</li>
+<li>Nếu key hỏng hoặc chế độ không hợp lệ, palette dừng. Palette không tự chuyển sang key khác.</li>
+<li>Palette bỏ qua mọi biến môi trường xác thực như <code>ANTHROPIC_API_KEY</code> còn sót trong Windows. Đây là nguyên nhân lỗi "Invalid API key · Fix external API key" ở bản 3.0.x.</li>
+</ul>
+
+<h2 id="muc-4">4. Lần đầu dùng trong AutoCAD</h2>
+<ol>
+<li>Mở AutoCAD. Nếu AutoCAD hỏi có nạp ClaudeCAD không, chọn <strong>Always Load</strong> (Luôn nạp).</li>
+<li>Mở palette bằng một trong hai cách: gõ lệnh <code>CLAUDE</code> (lệnh này ẩn/hiện palette), hoặc chọn tab <strong>Add-ins</strong> trên Ribbon rồi bấm <strong>Claude AI</strong>.</li>
+<li>Mở bản vẽ mới để thử, ví dụ gửi: "Liệt kê các layer trong bản vẽ này".</li>
+</ol>
+<p>Các lệnh hữu ích:</p>
+<table>
+<tr><th>Lệnh</th><th>Tác dụng</th></tr>
+<tr><td><code>CLAUDE</code></td><td>Ẩn/hiện palette (gõ lại lần nữa để ẩn)</td></tr>
+<tr><td><code>CLAUDENEW</code></td><td>Tạo hội thoại mới trong palette (như bấm nút Mới)</td></tr>
+<tr><td><code>CLAUDECHUP</code></td><td>Chụp một vùng màn hình và đưa vào palette (phím mặc định <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>)</td></tr>
+</table>
+<p>Phím <kbd>Ctrl</kbd>+<kbd>5</kbd> cũng ẩn/hiện palette. Các phím tắt đổi được trong <strong>Cài đặt</strong>, xem mục 5.</p>
+<!-- ANH-AUTOCAD: s06-canh-bao-nap-dll -->
+<!-- ANH-AUTOCAD: s07-ribbon -->
+<!-- ANH-AUTOCAD: s08-palette -->
+
+<h2 id="muc-5">5. Dùng palette</h2>
+
+<h3>Các khu vực trong palette</h3>
+<ul>
+<li><strong>Cài đặt</strong>: chọn Model, Mức suy nghĩ (Effort), bật/tắt <strong>Kèm đối tượng chọn</strong>, đổi <strong>Phím chụp vùng</strong> và <strong>Phím ẩn/hiện palette</strong>, phương thức đăng nhập, phần <strong>Skill</strong> (xem mục 6), và gợi ý trong tệp <code>goi_y.txt</code> (nút Sửa và Nạp lại).</li>
+<li><strong>Gợi ý lệnh</strong>: bấm một lần để điền gợi ý vào ô nhập, bấm đúp để gửi luôn.</li>
+<li><strong>Hội thoại</strong>: lịch sử các câu hỏi và trả lời.</li>
+</ul>
+
+<h3>Nhập và gửi</h3>
+<ul>
+<li><kbd>Enter</kbd>: gửi.</li>
+<li><kbd>Shift</kbd>+<kbd>Enter</kbd>: xuống dòng mới.</li>
+<li><kbd>Esc</kbd>: dừng Claude đang trả lời.</li>
+<li>Nút <strong>Gửi</strong>, <strong>Dừng</strong>, <strong>Mới</strong>. Nút <strong>Mới</strong> bắt đầu hội thoại sạch, không còn ngữ cảnh cũ.</li>
+</ul>
+
+<h3>Bộ đếm thời gian</h3>
+<p>Khi Claude đang làm việc, dòng trạng thái hiện số giây đã trôi qua. Khi xong, dòng này hiện tổng thời gian và chi tiết từng giai đoạn:</p>
+<ul>
+<li><strong>khởi động</strong>: thời gian đến khi nhận phản hồi đầu tiên;</li>
+<li><strong>Claude</strong>: thời gian Claude chờ và trả lời;</li>
+<li><strong>công cụ</strong>: thời gian chạy các lệnh CAD.</li>
+</ul>
+<p>Ví dụ: <code>Xong (2 thao tác) · 13,1 s — khởi động 1,1 · Claude 10,0 · công cụ 2,0</code>. Khi tệp đính kèm đang được đọc, palette hiện "Đang đọc tệp…". Nếu bấm <strong>Dừng</strong>, dòng trạng thái hiện "Đã dừng" cùng số giây.</p>
+
+<h3>Trả lời nhanh hơn</h3>
+<p>Sau tin nhắn đầu tiên, Claude tiếp tục chạy ngầm trong nền, nên các tin nhắn sau được trả lời nhanh hơn vì không phải khởi động lại.</p>
+<ul>
+<li>Claude tự tắt sau <strong>10 phút</strong> không dùng, và tắt khi AutoCAD đóng.</li>
+<li>Bấm <strong>Mới</strong>, hoặc đổi <strong>Model</strong> hay <strong>Mức suy nghĩ</strong>, sẽ khởi động lại Claude ở tin nhắn kế tiếp.</li>
+<li>Khi đang chạy, Claude dùng khoảng <strong>300 MB</strong> RAM.</li>
+</ul>
+
+<h3>Mức suy nghĩ và tốc độ</h3>
+<p>Mục <strong>Mức suy nghĩ</strong> trong Cài đặt ảnh hưởng trực tiếp đến tốc độ. Mức cao nhất (xhigh, max) suy nghĩ lâu hơn trước khi trả lời, ví dụ 10 giây trở lên với bản vẽ PDF. Với câu hỏi nhanh, chọn mức thấp hơn (low hoặc medium) để nhận câu trả lời sớm hơn.</p>
+
+<h3>Kèm đối tượng chọn</h3>
+<p>Khi bật tùy chọn này, các đối tượng bạn đang chọn trong AutoCAD được gửi kèm câu hỏi, để bạn nói "đổi màu các đối tượng này" mà không cần mô tả lại.</p>
+
+<h3>Ghim bản vẽ làm việc</h3>
+<p>Palette làm việc trên bản vẽ của yêu cầu, không theo tab bản vẽ bạn đang mở. Trước khi gửi yêu cầu, hãy đảm bảo đúng bản vẽ đang hoạt động.</p>
+
+<h3>Làm việc với nhiều bản vẽ</h3>
+<ul>
+<li>Mỗi bản vẽ có phiên hội thoại riêng. Palette đổi nội dung theo bản vẽ đang mở.</li>
+<li>Bản vẽ không ở phía trước vẫn đọc/ghi đối tượng được, nhưng không chạy được lệnh AutoCAD (<code>SendCommand</code>) và không zoom.</li>
+<li>Hội thoại không tự nối lại sau khi khởi động lại AutoCAD.</li>
+<li>Phím chụp vùng (mặc định <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>) và phím ẩn/hiện palette (<kbd>Ctrl</kbd>+<kbd>5</kbd>) chỉ hoạt động khi AutoCAD ở phía trước.</li>
+<li>Không còn phím tắt toàn hệ thống. Chụp xong không kéo AutoCAD lên trước.</li>
+</ul>
+
+<h3>Tệp gợi ý <code>goi_y.txt</code></h3>
+<p>Danh sách gợi ý nằm trong tệp <code>goi_y.txt</code> cạnh chương trình. Bạn có thể sửa tệp này bằng nút Sửa trong Cài đặt, rồi bấm Nạp lại để áp dụng. Khi gỡ cài đặt, tệp này được giữ lại.</p>
+
+<h3>Đính kèm tệp</h3>
+<p>Bạn có thể gửi kèm ảnh, tài liệu và bảng tính. Có ba cách đưa tệp vào:</p>
+<ul>
+<li>Kéo thả tệp vào bất kỳ chỗ nào trên palette.</li>
+<li>Bấm nút 📎 và chọn tệp.</li>
+<li>Dán ảnh bằng <kbd>Ctrl</kbd>+<kbd>V</kbd>, hoặc dùng chụp vùng (xem phím tắt bên dưới).</li>
+</ul>
+<table>
+<tr><th>Loại</th><th>Định dạng và giới hạn</th></tr>
+<tr><td>Ảnh</td><td>png, jpg, bmp, gif, webp</td></tr>
+<tr><td>PDF</td><td>Tối đa 8 MB</td></tr>
+<tr><td>Văn bản</td><td>txt, csv, json, lsp, py, md; tối đa 100 000 ký tự. Nội dung dài hơn sẽ bị cắt và có thông báo</td></tr>
+<tr><td>Excel</td><td>.xlsx và .xls, tối đa 10 MB</td></tr>
+</table>
+<p>Mỗi tin nhắn gửi tối đa <strong>10 tệp</strong> và <strong>15 MB</strong>.</p>
+<p>Ảnh được gửi với cạnh dài tối đa <strong>2000 px</strong>.</p>
+<p>Nếu cùng một PDF được đính kèm lại trong cùng hội thoại, palette không gửi lại nội dung PDF đó. Khi hội thoại được nén, palette hiện thông báo <em>Lịch sử vừa được nén; đính kèm lại PDF nếu Claude cần đọc.</em> Khi thấy thông báo này, hãy đính kèm lại PDF.</p>
+<div class="warn">Tệp đính kèm được gửi tới Anthropic và được lưu trong lịch sử Claude Code trên máy này.</div>
+<p>Nếu tệp .xls không đọc được, tệp có thể bị hỏng hoặc có mật khẩu. Hãy lưu lại thành .xlsx hoặc bỏ mật khẩu rồi thử lại.</p>
+<!-- ANH-AUTOCAD: s10-dinh-kem -->
+
+<h3>Phím tắt</h3>
+<table>
+<tr><th>Phím</th><th>Tác dụng</th></tr>
+<tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd></td><td>Chụp vùng màn hình khi AutoCAD ở phía trước. Không còn phím tắt toàn hệ thống. Lệnh <code>CLAUDECHUP</code> làm việc tương tự</td></tr>
+<tr><td><kbd>Ctrl</kbd>+<kbd>5</kbd></td><td>Ẩn/hiện palette (khi đang ở trong AutoCAD)</td></tr>
+</table>
+<p>Đổi phím: vào <strong>Cài đặt</strong>, ở dòng <strong>Phím chụp vùng</strong> hoặc <strong>Phím ẩn/hiện palette</strong>, bấm vào ô phím, rồi nhấn tổ hợp mới. Nhấn <kbd>Delete</kbd> hoặc bấm × để tắt phím đó.</p>
+<div class="note">Nếu <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd> làm UniKey đổi kiểu gõ, hãy đổi phím chụp vùng sang <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Q</kbd>.</div>
+<!-- ANH-AUTOCAD: s11-cai-dat-phim-tat -->
+<!-- ANH-AUTOCAD: s09-dang-chay -->
+
+<h2 id="muc-6">6. Skill: tự tạo và nạp</h2>
+
+<h3>Skill là gì</h3>
+<ul>
+<li>Skill là tệp <code>SKILL.md</code> hướng dẫn Claude cách làm một việc lặp lại trong AutoCAD (ví dụ quy trình ghi kích thước).</li>
+<li>Skill nằm ở <code>%LOCALAPPDATA%\cad-mcp\.claude\skills\&lt;tên&gt;\SKILL.md</code>. Mở lại palette (lượt hỏi mới) là có hiệu lực.</li>
+</ul>
+
+<h3>Ba nút trong Cài đặt</h3>
+<p>Hàng <strong>Skill</strong> trong phần <strong>Cài đặt</strong>, dưới trạng thái đăng nhập, có ba liên kết căn phải:</p>
+<ul>
+<li><strong>Thư mục skill</strong>: mở thư mục skill trong Explorer.</li>
+<li><strong>Tạo skill mới</strong>: tạo <code>skill-moi-&lt;n&gt;\SKILL.md</code> mẫu và mở bằng Notepad để bạn sửa. Mẫu khung:
+<pre><code>---
+name: skill-moi-1
+description: Mô tả ngắn skill này làm gì và khi nào dùng (Claude đọc dòng này để quyết định có dùng skill hay không).
+---
+
+# Tên skill
+
+## Khi nào dùng
+- Ví dụ: khi người dùng yêu cầu ...
+
+## Các bước
+1. Dùng công cụ mcp__autocad__... để ...
+2. ...
+
+## Lưu ý
+- Đơn vị bản vẽ: ...
+</code></pre>
+</li>
+<li><strong>Nạp skill…</strong>: chọn một tệp SKILL.md (nạp cả thư mục chứa nó) hoặc một gói .zip. Palette kiểm tra rồi hiện hộp xác nhận (tên, mô tả, số tệp, số tệp script .py/.lsp và phần đầu nội dung 1000 ký tự) trước khi chép; nếu đã có skill cùng tên thì hỏi ghi đè.</li>
+</ul>
+
+<h3>Gọi skill bằng lệnh</h3>
+<p>Gõ <code>/tên-skill nội dung cần làm</code> (hoặc <code>/skill tên-skill nội dung</code>) trong ô chat để bảo Claude dùng đúng skill đó. Khi đang có skill: tên không có trong danh sách thì palette không gửi và hiện danh sách skill đang có (muốn gửi như câu thường thì bỏ dấu / ở đầu). Khi chưa có skill hoặc skill đang tắt: dòng bắt đầu bằng / được gửi bình thường như bản 3.1.0, riêng <code>/skill …</code> sẽ hiện ghi chú lý do. Không gõ lệnh thì Claude vẫn tự chọn skill phù hợp theo mô tả.</p>
+
+<h3>Nhờ Claude soạn skill</h3>
+<ul>
+<li>Trong khung chat, yêu cầu rõ, ví dụ "Lưu quy trình vừa làm thành skill tên ghi-kich-thuoc".</li>
+<li>Claude chỉ lưu BẢN NHÁP vào <code>%LOCALAPPDATA%\cad-mcp\skill-nhap\</code>; palette hiện dòng "AI đã soạn skill chờ duyệt".</li>
+<li>Bấm "Nạp skill…" (hộp chọn tệp mở sẵn ở thư mục nháp). Hộp xác nhận hiện tên, mô tả, số tệp, số tệp script .py/.lsp và phần đầu nội dung (1000 ký tự). Với bản nháp do AI soạn có thêm dòng nhắc "chỉ nạp nếu chính bạn vừa yêu cầu soạn". Nếu SKILL.md dài, mở thư mục nháp đọc toàn bộ trước khi xác nhận. Tối đa 20 bản nháp.</li>
+</ul>
+
+<h3>Quy tắc tên và nội dung</h3>
+<ul>
+<li>Tên chỉ gồm chữ thường a–z, số, dấu gạch ngang đơn giữa các cụm (không bắt đầu/kết thúc bằng gạch ngang, không hai gạch liền nhau), bắt đầu bằng chữ, tối đa 64 ký tự.</li>
+<li>Phần đầu SKILL.md chỉ nhận các khoá: name, description, when_to_use, argument-hint, arguments, disable-model-invocation, user-invocable, license, metadata, compatibility.</li>
+<li>Gói bị từ chối nếu có:
+<ul>
+<li>lệnh shell nhúng (<code>!`</code> hoặc khối <code>```!</code>), khoá hooks/allowed-tools/model…;</li>
+<li>ký tự vô hình hoặc ký tự đảo chiều văn bản;</li>
+<li>tệp ngoài các đuôi .md .txt .json .csv .yaml .yml .py .lsp .dxf .dwg .dwt .png .jpg;</li>
+<li>tệp/thư mục tên bắt đầu bằng dấu chấm;</li>
+<li>hơn một SKILL.md;</li>
+<li>quá 200 tệp hoặc 20 MB;</li>
+<li>SKILL.md quá 256 KB.</li>
+</ul>
+</li>
+</ul>
+
+<h3>Khi nào chế độ skill tự tắt</h3>
+<p>Palette chạy như 3.1.0 và hiện một dòng đỏ khi:</p>
+<ul>
+<li>trong <code>%LOCALAPPDATA%\cad-mcp\.claude\</code> có bất cứ thứ gì ngoài thư mục <code>skills</code> (ví dụ settings.json);</li>
+<li>có CLAUDE.md, CLAUDE.local.md hoặc AGENTS.md trong thư mục cài;</li>
+<li>có thư mục <code>.claude</code> hoặc tệp CLAUDE.md/AGENTS.md ở bất kỳ thư mục cha nào của thư mục cài (trừ <code>.claude</code> trong thư mục người dùng);</li>
+<li>một skill đã chép tay vi phạm quy tắc ở mục trên.</li>
+</ul>
+<p>Trên máy nhiều người dùng, người khác tạo <code>C:\.claude</code> hoặc <code>C:\CLAUDE.md</code> cũng làm skill tự tắt; xoá mục đó để bật lại.</p>
+<p>Trong thư mục <code>skills</code> có tệp lẻ, thư mục thiếu SKILL.md hoặc tên thư mục không đúng quy tắc tên thì MỌI skill đều bị tắt (dòng đỏ) cho tới khi bạn xoá hoặc sửa mục đó.</p>
+<p>Khi khởi động, nếu Claude báo có công cụ, skill hoặc plugin ngoài danh sách cho phép (chỉ chấp nhận plugin dựng sẵn của Claude Code), palette lặng lẽ chạy lại phiên đó không có skill; lý do ghi trong log của palette.</p>
+<p>Trường hợp này palette không báo trên khung chat; muốn biết lý do thì xem dòng có <code>"event":"skill_init_bad"</code> trong <code>%LOCALAPPDATA%\cad-mcp\logs\perf.jsonl</code>. Khi đó gõ <code>/tên-skill</code> sẽ thấy ghi chú skill đang tắt.</p>
+<p>Không có skill nào thì Claude được chạy với tham số y hệt 3.1.0; máy chủ AutoCAD có thêm công cụ <code>save_skill</code>, chỉ ghi bản nháp vào thư mục <code>skill-nhap</code>. Skill cá nhân trong <code>%USERPROFILE%\.claude\skills</code> KHÔNG được palette nạp. Plugin bạn cài cho Claude Code cũng không được nạp.</p>
+
+<div class="warn">
+<p><strong>Đọc trước khi dùng skill</strong></p>
+<ul>
+<li>Skill là chương trình: nó điều khiển được công cụ run_python, tức chạy mã bất kỳ dưới tài khoản Windows của bạn (đọc/xoá tệp, gửi dữ liệu, đọc API key đã lưu). Không có sandbox. Chỉ nạp skill bạn đã tự đọc hết hoặc từ nguồn tin cậy; script kèm trong thư mục skill cũng chạy được qua run_python.</li>
+<li>Chữ trong bản vẽ hoặc tệp đính kèm có thể chứa chỉ dẫn giả xúi Claude soạn skill độc. Luôn đọc kỹ bản nháp trước khi duyệt.</li>
+<li>Rủi ro không chặn được hoàn toàn: Claude bị chỉ dẫn giả điều khiển vẫn có thể dùng run_python ghi thẳng vào thư mục skill, bỏ qua bước duyệt. Thấy skill lạ trong "Thư mục skill" thì xoá.</li>
+<li>Skill cần các công cụ Read/Bash/Write của Claude Code sẽ không chạy đúng: palette chỉ cho Claude dùng công cụ Skill và công cụ AutoCAD.</li>
+<li>Nội dung skill được gửi tới Anthropic ở mỗi phiên (tốn token).</li>
+<li>Máy nhiều người dùng: giữ thư mục cài trong %LOCALAPPDATA% (mặc định).</li>
+<li>Bộ kiểm của palette chỉ chặn các cú pháp nguy hiểm đã biết; skill qua được bộ kiểm KHÔNG có nghĩa là an toàn.</li>
+<li>Cơ chế skill đã được kiểm với Claude Code 2.1.310 trên một máy. Sau khi Claude Code cập nhật, hoặc với tài khoản/bản Claude Code khác, nếu palette báo skill bị tắt (dòng đỏ) thì cứ dùng không có skill cho tới bản ClaudeCAD kế tiếp.</li>
+<li>Máy dùng chung với người không tin cậy: không nên bật skill.</li>
+</ul>
+</div>
+
+<h2 id="muc-7">7. An toàn: chỉ dùng với bản vẽ tin cậy</h2>
+<p>Đây là nội dung giống hệt trang rủi ro bạn đã xác nhận khi cài:</p>
+<div class="warn">
+<p>Palette cho phép Claude TỰ ĐỘNG dùng mọi công cụ bản vẽ, gồm chạy lệnh AutoCAD và chạy mã Python trên máy này với quyền của bạn, không hỏi lại.</p>
+<p>Chữ trong bản vẽ hoặc tệp đính kèm (ví dụ DWG nhận từ người khác) có thể chứa chỉ dẫn độc khiến Claude chạy mã: đọc, sửa, xóa tệp, đọc thông tin đăng nhập Claude (<code>%USERPROFILE%\.claude\.credentials.json</code>), gửi dữ liệu ra ngoài. Ảnh hưởng kéo dài tới khi bấm "Mới".</p>
+<p>Nội dung bản vẽ, yêu cầu và tệp đính kèm được gửi tới Anthropic. Chỉ dùng với bản vẽ và tệp tin cậy; lưu bản vẽ trước khi dùng.</p>
+</div>
+<p>Quy tắc thực hành:</p>
+<ul>
+<li>Chỉ mở bản vẽ và tệp từ người bạn tin cậy hoặc do chính bạn tạo.</li>
+<li>Lưu bản vẽ trước khi dùng palette, để có bản gốc khi cần khôi phục.</li>
+<li>Khi chuyển sang công việc khác, bấm <strong>Mới</strong> để hội thoại không kéo dài ảnh hưởng.</li>
+<li>Đọc kỹ kết quả Claude trước khi lưu hoặc gửi bản vẽ đi.</li>
+</ul>
+
+<h3>Giới hạn</h3>
+<ul>
+<li>API key được mã hoá, nhưng mã chạy dưới cùng tài khoản Windows vẫn lấy được key. Nên dùng key riêng trong workspace có hạn mức chi.</li>
+<li>Sau khi bấm "Dán &amp; lưu", key vẫn còn trong clipboard và lịch sử Win+V.</li>
+<li>Sau khi xoá key, phiên đang chạy có thể giữ key tới lượt sau hoặc tối đa 10 phút.</li>
+<li>Không hỗ trợ <code>ANTHROPIC_BASE_URL</code> (gateway/proxy riêng).</li>
+</ul>
+
+<h2 id="muc-8">8. Xử lý sự cố</h2>
+<table>
+<tr><th>Triệu chứng</th><th>Cách xử lý</th></tr>
+<tr><td>Không thấy palette</td><td>Kiểm tra AutoCAD có hỏi nạp ClaudeCAD không và đã chọn <strong>Always Load</strong>. Kiểm tra biến <code>APPAUTOLOAD</code> có giá trị <code>14</code>. Thử gõ <code>CLAUDE</code>.</td></tr>
+<tr><td>Một phím tắt hiện "(lỗi)" trong Cài đặt</td><td>Chương trình khác đang giữ tổ hợp phím đó. Chọn tổ hợp khác.</td></tr>
+<tr><td>Không tìm thấy claude.exe, hoặc bước cài Claude Code báo lỗi</td><td>Máy không tải được Claude Code (mạng, proxy, hoặc chính sách của máy/tổ chức chặn script PowerShell). Cài Claude Code theo hướng dẫn chính thức của Anthropic, rồi chạy lại Setup hoặc mở palette.</td></tr>
+<tr><td>Lỗi 403</td><td>Tổ chức chặn Claude Code. Liên hệ quản trị viên.</td></tr>
+<tr><td>Mạng có proxy</td><td>Quản trị viên CNTT cần cấu hình biến <code>HTTPS_PROXY</code>, và nếu có chứng chỉ riêng thì <code>NODE_EXTRA_CA_CERTS</code>.</td></tr>
+<tr><td>Phần mềm diệt virus chặn <code>python.exe</code> hoặc <code>claude.exe</code></td><td>Nhờ quản trị viên CNTT kiểm tra cảnh báo của phần mềm diệt virus. Thư mục cài đặt là <code>%LOCALAPPDATA%\cad-mcp</code>.</td></tr>
+<tr><td>Báo thiếu tệp <code>mcp.json</code></td><td>Ghi lại thông báo và liên hệ người hỗ trợ kèm log cài đặt đã được làm sạch (mục 8 phía trên).</td></tr>
+<tr><td>Không đọc được tệp .xls</td><td>Tệp bị hỏng hoặc có mật khẩu. Xem mục 5.</td></tr>
+</table>
+<div class="warn"><strong>Log cài đặt</strong> nằm trong thư mục tạm <code>%TEMP%</code> với tên <code>Setup Log*.txt</code>. Log này <strong>chứa tên người dùng Windows và đường dẫn trên máy bạn</strong>. Kiểm tra và xóa các thông tin đó trước khi gửi log cho người khác.</div>
+
+<h3>Nhật ký hiệu năng (perf.jsonl)</h3>
+<p>Mỗi lần hỏi, palette ghi một dòng vào <code>%LOCALAPPDATA%\cad-mcp\logs\perf.jsonl</code>, gồm thời gian từng giai đoạn, loại, kích thước và số trang của tệp đính kèm, model và mức suy nghĩ. Ngoài ra có thể có dòng sự kiện <code>skill_init_bad</code> khi skill tự tắt lúc khởi động.</p>
+<ul>
+<li>Nhật ký <strong>không bao giờ</strong> ghi nội dung câu hỏi, tên tệp, đường dẫn, mã phiên, tài khoản hay email.</li>
+<li>Tệp giới hạn khoảng <strong>1 MB</strong>. Khi đầy, nội dung cũ được chuyển sang <code>perf.1.jsonl</code>.</li>
+<li>Tệp bị xóa khi gỡ cài đặt.</li>
+<li>Nếu cần hỗ trợ về tốc độ, bạn có thể gửi tệp này cho người hỗ trợ để phân tích hiệu năng.</li>
+</ul>
+
+<h2 id="muc-9">9. Gỡ cài đặt</h2>
+<p>Trước khi gỡ, <strong>đóng AutoCAD</strong>. Có hai cách:</p>
+<ol>
+<li>Vào <strong>Start Menu</strong> &rarr; <strong>Claude AI cho AutoCAD</strong> &rarr; <strong>Gỡ cài đặt Claude AI cho AutoCAD</strong>.</li>
+<li>Hoặc vào <strong>Settings</strong> (Cài đặt) &rarr; <strong>Apps</strong> (Ứng dụng) &rarr; tìm <strong>Claude AI cho AutoCAD</strong> &rarr; <strong>Uninstall</strong>.</li>
+</ol>
+<p>Trong thư mục <strong>Claude AI cho AutoCAD</strong> ở Start Menu cũng có mục <strong>Hướng dẫn sử dụng Claude AI cho AutoCAD</strong>, mở tệp hướng dẫn này.</p>
+<table>
+<tr><th>Bị xóa</th><th>Được giữ lại</th></tr>
+<tr><td>Chương trình đã cài, Python và thư viện đi kèm, bộ phần bổ sung (bundle) trong AutoCAD, shortcut Start Menu, nhật ký hiệu năng trong thư mục <code>logs</code>, và các cài đặt trong registry của ClaudeCad (HKCU\Software\ClaudeCad)</td><td><code>goi_y.txt</code> (gợi ý bạn đã sửa), Claude Code, đăng nhập Claude của bạn</td></tr>
+</table>
+<p>Claude Code và đăng nhập Claude không bị gỡ khi gỡ palette.</p>
+<p>Gỡ cài đặt giữ lại skill (<code>.claude\skills</code>), bản nháp skill (<code>skill-nhap</code>) và <code>goi_y.txt</code> của bạn trong <code>%LOCALAPPDATA%\cad-mcp</code>. Muốn xoá hẳn thì xoá thư mục đó sau khi gỡ.</p>
+
+<h2 id="muc-10">10. Quản trị viên: cài đặt hàng loạt</h2>
+<p>Lệnh cài im lặng, chạy không hiện hộp thoại:</p>
+<p><code>cad-mcp-setup-3.1.1.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /ACCEPTRISK=yes</code></p>
+<ul>
+<li><code>/ACCEPTRISK=yes</code> là bắt buộc: khi thiếu, Setup dừng. Thêm vào lệnh nghĩa là người dùng đã đọc mục 7.</li>
+<li>Để Setup cài Claude Code, thêm <code>/MERGETASKS="claudecli"</code>. Không có tham số này thì Setup không tải Claude Code.</li>
+<li>Cài đặt là <strong>theo từng người dùng</strong>, không cần quyền quản trị. Trên máy dùng hồ sơ roaming, mỗi người dùng cần cài riêng.</li>
+</ul>
+
+</body>
+</html>

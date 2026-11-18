@@ -1,0 +1,11 @@
+﻿; Mỗi dòng là một gợi ý lệnh cho Claude. Dòng bắt đầu bằng ; bị bỏ qua.
+Ghi kích thước tất cả các cạnh của polyline đang chọn
+Tính tổng chiều dài các đối tượng đang chọn
+Tính diện tích từng polyline kín đang chọn và tổng diện tích
+Đếm số lượng từng loại block trong bản vẽ
+Liệt kê các layer và số đối tượng trên mỗi layer
+Chuyển các text đang chọn sang layer TEXT màu vàng
+Tìm và xoá các đối tượng trùng nhau (cùng loại, cùng vị trí)
+Vẽ khung bản vẽ A3 tỉ lệ 1:100 tại gốc toạ độ
+Chụp màn hình bản vẽ và cho biết đang có gì
+Zoom toàn bộ bản vẽ rồi lưu file

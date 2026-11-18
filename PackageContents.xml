@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0" ProductType="Application" Name="Claude AI cho AutoCAD" AppVersion="3.1.1"
+    Description="Palette tro ly Claude dock trong AutoCAD" Author="cad-mcp" Icon="./Contents/icon.ico"
+    AutodeskProduct="AutoCAD" SupportedLocales="Enu"
+    ProductCode="{C44BE12E-8F3B-440F-A00F-AF57004FE387}" UpgradeCode="{2D9A6B13-7E45-4F80-B1C3-5E8D2A4F6C70}">
+  <CompanyDetails Name="cad-mcp" />
+  <Components Description="AutoCAD 2018-2024 (.NET Framework)">
+    <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R22.0" SeriesMax="R24.3" />
+    <ComponentEntry AppName="ClaudeCAD" Version="3.1.1" ModuleName="./Contents/net46/ClaudePalette.dll"
+        LoadOnAutoCADStartup="True" LoadOnCommandInvocation="True">
+      <Commands GroupName="CLAUDE_CAD">
+        <Command Local="CLAUDE" Global="CLAUDE" />
+        <Command Local="CLAUDENEW" Global="CLAUDENEW" />
+        <Command Local="CLAUDECHUP" Global="CLAUDECHUP" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+  <Components Description="AutoCAD 2025-2026 (.NET 8)">
+    <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R25.0" SeriesMax="R25.1" />
+    <ComponentEntry AppName="ClaudeCAD" Version="3.1.1" ModuleName="./Contents/net8/ClaudePalette.dll"
+        LoadOnAutoCADStartup="True" LoadOnCommandInvocation="True">
+      <Commands GroupName="CLAUDE_CAD">
+        <Command Local="CLAUDE" Global="CLAUDE" />
+        <Command Local="CLAUDENEW" Global="CLAUDENEW" />
+        <Command Local="CLAUDECHUP" Global="CLAUDECHUP" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+  <Components Description="AutoCAD 2027+ (.NET 10)">
+    <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R26.0" />
+    <ComponentEntry AppName="ClaudeCAD" Version="3.1.1" ModuleName="./Contents/net10/ClaudePalette.dll"
+        LoadOnAutoCADStartup="True" LoadOnCommandInvocation="True">
+      <Commands GroupName="CLAUDE_CAD">
+        <Command Local="CLAUDE" Global="CLAUDE" />
+        <Command Local="CLAUDENEW" Global="CLAUDENEW" />
+        <Command Local="CLAUDECHUP" Global="CLAUDECHUP" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+</ApplicationPackage>

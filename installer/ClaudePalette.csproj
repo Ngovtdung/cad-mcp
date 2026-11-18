@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- ClaudePalette.dll: net46 cho AutoCAD 2018-2024 (R22.0-R24.3), net8.0-windows cho AutoCAD 2025-2026 (R25.x), net10.0-windows cho AutoCAD 2027+ (R26.0+).
+       Nguồn: ..\ClaudePalette.cs, ..\Attachments.cs, ..\Hotkeys.cs + ..\ClaudePalette.xaml (nhúng). Spec: ..\docs\spec-installer.md §2 -->
+  <PropertyGroup>
+    <TargetFrameworks>net46;net8.0-windows;net10.0-windows</TargetFrameworks>
+    <AssemblyName>ClaudePalette</AssemblyName>
+    <RootNamespace>ClaudeCad</RootNamespace>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <LangVersion>5</LangVersion>
+    <DebugType>none</DebugType>
+    <Deterministic>true</Deterministic>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <Company>cad-mcp</Company>
+    <Authors>Gaus</Authors>
+    <Copyright>Copyright (c) 2026 Gaus</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Product>Claude AI cho AutoCAD</Product>
+    <Version>3.1.1</Version>
+    <AssemblyVersion>3.1.1.0</AssemblyVersion>
+    <FileVersion>3.1.1.0</FileVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\ClaudePalette.cs" />
+    <Compile Include="..\Attachments.cs" />
+    <Compile Include="..\Hotkeys.cs" />
+    <EmbeddedResource Include="..\ClaudePalette.xaml" LogicalName="ClaudePalette.xaml" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="AutoCAD.NET" Version="22.0.0" ExcludeAssets="runtime" PrivateAssets="all" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.IO.Compression" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+    <PackageReference Include="AutoCAD.NET" Version="25.0.1" ExcludeAssets="runtime" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-windows'">
+    <PackageReference Include="AutoCAD.NET" Version="26.0.0" ExcludeAssets="runtime" PrivateAssets="all" />
+  </ItemGroup>
+</Project>
