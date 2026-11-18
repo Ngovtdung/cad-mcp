@@ -211,10 +211,10 @@ th{background:#f0f0f0}
 <li>Skill nằm ở <code>%LOCALAPPDATA%\cad-mcp\.claude\skills\&lt;tên&gt;\SKILL.md</code>. Mở lại palette (lượt hỏi mới) là có hiệu lực.</li>
 </ul>
 
-<h3>Ba nút trong Cài đặt</h3>
-<p>Hàng <strong>Skill</strong> trong phần <strong>Cài đặt</strong>, dưới trạng thái đăng nhập, có ba liên kết căn phải:</p>
+<h3>Quản lý skill trong Cài đặt</h3>
+<p>Dòng <strong>Skill</strong> trong phần <strong>Cài đặt</strong> hiện trạng thái ("Chưa có skill", "&lt;n&gt; skill" hoặc "Đang tắt") và liên kết <strong>Quản lý ▾</strong>. Bấm vào sẽ mở menu có ba mục:</p>
 <ul>
-<li><strong>Thư mục skill</strong>: mở thư mục skill trong Explorer.</li>
+<li><strong>Mở thư mục skill</strong>: mở thư mục skill trong Explorer.</li>
 <li><strong>Tạo skill mới</strong>: tạo <code>skill-moi-&lt;n&gt;\SKILL.md</code> mẫu và mở bằng Notepad để bạn sửa. Mẫu khung:
 <pre><code>---
 name: skill-moi-1
@@ -283,7 +283,7 @@ description: Mô tả ngắn skill này làm gì và khi nào dùng (Claude đ�
 <ul>
 <li>Skill là chương trình: nó điều khiển được công cụ run_python, tức chạy mã bất kỳ dưới tài khoản Windows của bạn (đọc/xoá tệp, gửi dữ liệu, đọc API key đã lưu). Không có sandbox. Chỉ nạp skill bạn đã tự đọc hết hoặc từ nguồn tin cậy; script kèm trong thư mục skill cũng chạy được qua run_python.</li>
 <li>Chữ trong bản vẽ hoặc tệp đính kèm có thể chứa chỉ dẫn giả xúi Claude soạn skill độc. Luôn đọc kỹ bản nháp trước khi duyệt.</li>
-<li>Rủi ro không chặn được hoàn toàn: Claude bị chỉ dẫn giả điều khiển vẫn có thể dùng run_python ghi thẳng vào thư mục skill, bỏ qua bước duyệt. Thấy skill lạ trong "Thư mục skill" thì xoá.</li>
+<li>Rủi ro không chặn được hoàn toàn: Claude bị chỉ dẫn giả điều khiển vẫn có thể dùng run_python ghi thẳng vào thư mục skill, bỏ qua bước duyệt. Thấy skill lạ trong thư mục skill (<strong>Quản lý ▾</strong> → <strong>Mở thư mục skill</strong>) thì xoá.</li>
 <li>Skill cần các công cụ Read/Bash/Write của Claude Code sẽ không chạy đúng: palette chỉ cho Claude dùng công cụ Skill và công cụ AutoCAD.</li>
 <li>Nội dung skill được gửi tới Anthropic ở mỗi phiên (tốn token).</li>
 <li>Máy nhiều người dùng: giữ thư mục cài trong %LOCALAPPDATA% (mặc định).</li>
